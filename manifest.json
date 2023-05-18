@@ -1,6 +1,6 @@
 {
-    "name": "PWA with Flask",
-    "short_name": "PWA with Flask",
+    "name": "Rent My Gear",
+    "short_name": "rent-my-gear",
     "scope": "/",
     "start_url": "/",
     "background_color": "#6dcdb1",

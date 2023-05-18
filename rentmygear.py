@@ -2,26 +2,55 @@ from flask import Flask, \
                     render_template, \
                     send_from_directory, \
                     make_response, \
-                    request
-import sys
+                    request, \
+                    session, \
+                    redirect
+import pyrebase
 
+config = {
+    "apiKey": "AIzaSyCaqYs040k4sD_NrjkCSx2IztVyomfufm8",
+    "authDomain": "rent-my-gear.firebaseapp.com",
+    "projectId": "rent-my-gear",
+    "storageBucket": "rent-my-gear.appspot.com",
+    "messagingSenderId": "892030622526",
+    "appId": "1:892030622526:web:df3b160d8cac60843caa6f",
+    "measurementId": "G-N85D9ZV8WX",
+    "databaseURL": ""
+}
 
 app = Flask(__name__)
+
+app.secret_key = 'secret'
+
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
 
 
 @app.route("/", methods=['POST', 'GET'])
 @app.route("/home", methods=['POST', 'GET'])
 def home():
+    if 'user' in session:
+        return f"Hi, {session['user']}"
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        return f"username: {username}, password={password}"
+        try:
+            user = auth.sign_in_with_email_and_password(username, password)
+            session['user'] = username
+        except:
+            return 'Failed to login'
     return render_template('home.html')
 
 
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+
+@app.route("/logout")
+def logout():
+    session.pop('user')
+    return redirect('/')
 
 
 @app.route('/manifest.json')
