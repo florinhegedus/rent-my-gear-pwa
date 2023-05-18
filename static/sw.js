@@ -1,5 +1,16 @@
 console.log('Hello from sw.js');
 
+// network first, then fallback to cache
+import {registerRoute} from 'workbox-routing';
+import {NetworkFirst} from 'workbox-strategies';
+
+registerRoute(
+  ({url}) => url.pathname.startsWith('/social-timeline/'),
+  new NetworkFirst()
+);
+
+
+// google workbox service worker
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js');
 
 if (workbox) {

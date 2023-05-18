@@ -1,15 +1,21 @@
 from flask import Flask, \
                     render_template, \
                     send_from_directory, \
-                    make_response
+                    make_response, \
+                    request
+import sys
 
 
 app = Flask(__name__)
 
 
-@app.route("/")
-@app.route("/home")
+@app.route("/", methods=['POST', 'GET'])
+@app.route("/home", methods=['POST', 'GET'])
 def home():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        return f"username: {username}, password={password}"
     return render_template('home.html')
 
 
