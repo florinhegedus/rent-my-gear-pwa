@@ -27,8 +27,12 @@ auth = firebase.auth()
 
 
 @app.route("/", methods=['POST', 'GET'])
-@app.route("/home", methods=['POST', 'GET'])
 def home():
+    return render_template('home.html')
+
+
+@app.route("/login", methods=['POST', 'GET'])
+def login():
     if 'user' in session:
         return f"Hi, {session['user']}"
     if request.method == 'POST':
@@ -39,7 +43,22 @@ def home():
             session['user'] = username
         except:
             return 'Failed to login'
-    return render_template('home.html')
+    return render_template('login.html')
+
+
+@app.route("/register", methods=['POST', 'GET'])
+def register():
+    if 'account_created' in session:
+        return "Account created."
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        try:
+            auth.create_user_with_email_and_password(username, password)
+            session['account_created'] = True
+        except:
+            return 'Failed to register'
+    return render_template('register.html')
 
 
 @app.route("/about")
