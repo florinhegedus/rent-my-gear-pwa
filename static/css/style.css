@@ -14,7 +14,7 @@ h1 {
    border: 2px solid #bbb;
 }
 /* end demo only */
-.mobile-bottom-nav {
+.nav {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -27,7 +27,7 @@ h1 {
   box-shadow: 0 -2px 5px -2px #333;
   background-color: #fff;
 }
-.mobile-bottom-nav__item {
+.item {
   flex-grow: 1;
   text-align: center;
   font-size: 12px;
@@ -35,10 +35,10 @@ h1 {
   flex-direction: column;
   justify-content: center;
 }
-.mobile-bottom-nav__item--active {
+.active {
   color: rgb(0, 34, 255);
 }
-.mobile-bottom-nav__item-content {
+.content {
   display: flex;
   flex-direction: column;
 }

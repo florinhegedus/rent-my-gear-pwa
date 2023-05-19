@@ -12,33 +12,29 @@
     </head>
    <body>
         {% block content %} {% endblock %}
-        <nav class="mobile-bottom-nav">
-            <div class="mobile-bottom-nav__item mobile-bottom-nav__item--active">
-                <div class="mobile-bottom-nav__item-content">
-                    <i class="material-icons">home</i>
-                    Home
+        <nav class="nav">
+            <div {% if page=='home' %}class="item active"{% else %}class="item"{% endif %}>
+                <div class="content">
+                    <i class="material-icons" onclick="location.href='home';">home</i>
                 </div>		
             </div>
-            <div class="mobile-bottom-nav__item">		
-                <div class="mobile-bottom-nav__item-content">
-                    <i class="material-icons">search</i>
-                    Search
+            <div {% if page=='search' %}class="item active"{% else %}class="item"{% endif %}>		
+                <div class="content">
+                    <i class="material-icons" onclick="location.href='search';">search</i>
                 </div>
             </div>
-            <div class="mobile-bottom-nav__item">
-                <div class="mobile-bottom-nav__item-content">
-                    <i class="material-icons">add_box</i>
-                    New
+            <div {% if page=='add_item' %}class="item active"{% else %}class="item"{% endif %}>
+                <div class="content">
+                    <i class="material-icons" onclick="location.href='add_item';">add_box</i>
                 </div>		
             </div>
             
-            <div class="mobile-bottom-nav__item">
-                <div class="mobile-bottom-nav__item-content">
-                    <i class="material-icons">settings</i>
-                    Settings
+            <div {% if page=='settings' %}class="item active"{% else %}class="item"{% endif %}>
+                <div class="content">
+                    <i class="material-icons" onclick="location.href='settings';">menu</i>
                 </div>		
             </div>
         </nav>
-      <script src="/static/js/script.js"></script>
+      <!-- <script src="/static/js/script.js"></script> -->
    </body>
 </html>

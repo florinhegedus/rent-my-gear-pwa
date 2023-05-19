@@ -24,11 +24,12 @@ auth = firebase.auth()
 
 
 @app.route("/", methods=['POST', 'GET'])
+@app.route("/home", methods=['POST', 'GET'])
 def home():
     if 'user' not in session:
         user = auth.sign_in_anonymous()
         session['anonymous_user'] = user
-    return render_template('home.html')
+    return render_template('home.html', page='home')
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -72,6 +73,21 @@ def user():
 @app.route("/base")
 def base():
     return render_template("base.html")
+
+
+@app.route("/search")
+def search():
+    return render_template("search.html", page="search")
+
+
+@app.route("/add_item")
+def add_item():
+    return render_template("add_item.html", page="add_item")
+
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html", page="settings")
 
 
 @app.route("/about")
