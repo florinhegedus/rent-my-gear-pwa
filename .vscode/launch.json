@@ -16,7 +16,15 @@
             "name": "Python: Test Firebase",
             "type": "python",
             "request": "launch",
-            "program": "authenticate.py",
+            "program": "test_firebase.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Create Firebase DB",
+            "type": "python",
+            "request": "launch",
+            "program": "create_db.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
