@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Home</title>
-        <link rel="manifest" href="../manifest.json">
-        <script>
-            if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function() {
-                navigator.serviceWorker.register("../sw.js", {scope:"/"}).then(function(registration) {
-                // Registration was successful
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
-              // registration failed :(
-                 console.log('ServiceWorker registration failed: ', err);
-               });
-             });
-            }
-            </script>
-    </head>
-<body>
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+{% block head %}
+<link rel="manifest" href="../manifest.json">
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register("../sw.js", {scope:"/"}).then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+    </script>
+{% endblock %}
+{% block content %}
   <h1>Home Page</h1>
   <a href="/login">
     <button type="submit" value="login">Login</button>
@@ -32,5 +31,4 @@
   <a href="/logout">
     <button type="submit" value="logout">Logout</button>
   </a>
-</body>
-</html>
+{% endblock %}

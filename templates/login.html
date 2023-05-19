@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login</title>
-    </head>
-<body>
-  <h1>Login Page</h1>
-  <form action="/login" method="POST">
-    <label for="fname">email:</label>
-    <input type="text" id="email" name="email"><br><br>
-    <label for="lname">password:</label>
-    <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Login">
-  </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %} 
+Login 
+{% endblock %}
+
+{% block content %} 
+<form action="/login" method="POST">
+  <label for="fname">email:</label>
+  <input type="text" id="email" name="email"><br><br>
+  <label for="lname">password:</label>
+  <input type="password" id="password" name="password"><br><br>
+  <input type="submit" value="Login">
+</form>
+{% endblock %}

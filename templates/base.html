@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="author" content="CodeHim">
+      <title>{% block title %} {% endblock %} - RentMyGear</title>
+      <!-- Style CSS -->
+      <link rel="stylesheet" href="/static/css/style.css">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+      {% block head %} {% endblock %}
+    </head>
+   <body>
+        {% block content %} {% endblock %}
+        <nav class="mobile-bottom-nav">
+            <div class="mobile-bottom-nav__item mobile-bottom-nav__item--active">
+                <div class="mobile-bottom-nav__item-content">
+                    <i class="material-icons">home</i>
+                    Home
+                </div>		
+            </div>
+            <div class="mobile-bottom-nav__item">		
+                <div class="mobile-bottom-nav__item-content">
+                    <i class="material-icons">search</i>
+                    Search
+                </div>
+            </div>
+            <div class="mobile-bottom-nav__item">
+                <div class="mobile-bottom-nav__item-content">
+                    <i class="material-icons">add_box</i>
+                    New
+                </div>		
+            </div>
+            
+            <div class="mobile-bottom-nav__item">
+                <div class="mobile-bottom-nav__item-content">
+                    <i class="material-icons">settings</i>
+                    Settings
+                </div>		
+            </div>
+        </nav>
+      <script src="/static/js/script.js"></script>
+   </body>
+</html>

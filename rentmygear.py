@@ -9,6 +9,7 @@ import pyrebase
 import yaml
 
 
+# Read the firebase info
 with open("firebase_config.yaml", "r") as stream:
     try:
         config = yaml.safe_load(stream)
@@ -16,7 +17,6 @@ with open("firebase_config.yaml", "r") as stream:
         print(exc)
 
 app = Flask(__name__)
-
 app.secret_key = 'secret'
 
 firebase = pyrebase.initialize_app(config)
@@ -67,6 +67,11 @@ def user():
         return session['anonymous_user']
     else:
         return 'Error'
+
+
+@app.route("/base")
+def base():
+    return render_template("base.html")
 
 
 @app.route("/about")
