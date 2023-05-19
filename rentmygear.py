@@ -6,17 +6,14 @@ from flask import Flask, \
                     session, \
                     redirect
 import pyrebase
+import yaml
 
-config = {
-    "apiKey": "AIzaSyCaqYs040k4sD_NrjkCSx2IztVyomfufm8",
-    "authDomain": "rent-my-gear.firebaseapp.com",
-    "projectId": "rent-my-gear",
-    "storageBucket": "rent-my-gear.appspot.com",
-    "messagingSenderId": "892030622526",
-    "appId": "1:892030622526:web:df3b160d8cac60843caa6f",
-    "measurementId": "G-N85D9ZV8WX",
-    "databaseURL": ""
-}
+
+with open("firebase_config.yaml", "r") as stream:
+    try:
+        config = yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
 
 app = Flask(__name__)
 
@@ -28,19 +25,22 @@ auth = firebase.auth()
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
+    if 'user' not in session:
+        user = auth.sign_in_anonymous()
+        session['anonymous_user'] = user
     return render_template('home.html')
 
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
-    if 'user' in session:
+    if 'user' in session and 'anonymous' not in session:
         return f"Hi, {session['user']}"
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         try:
-            user = auth.sign_in_with_email_and_password(username, password)
-            session['user'] = username
+            user = auth.sign_in_with_email_and_password(email, password)
+            session['user'] = user
         except:
             return 'Failed to login'
     return render_template('login.html')
@@ -48,17 +48,25 @@ def login():
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
-    if 'account_created' in session:
-        return "Account created."
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         try:
-            auth.create_user_with_email_and_password(username, password)
+            auth.create_user_with_email_and_password(email, password)
             session['account_created'] = True
         except:
             return 'Failed to register'
     return render_template('register.html')
+
+
+@app.route("/user")
+def user():
+    if 'user' in session:
+        return session['user']
+    elif 'anonymous_user' in session:
+        return session['anonymous_user']
+    else:
+        return 'Error'
 
 
 @app.route("/about")

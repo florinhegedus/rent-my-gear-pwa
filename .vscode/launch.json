@@ -11,6 +11,14 @@
             "program": "rentmygear.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Python: Test Firebase",
+            "type": "python",
+            "request": "launch",
+            "program": "authenticate.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
