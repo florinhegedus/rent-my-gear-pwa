@@ -17,21 +17,21 @@ def create_users():
                 email='user1@gmail.com',
                 email_verified=False,
                 phone_number='+15555550100',
-                password='secretPassword',
+                password='123456',
                 display_name='John Unu',
                 disabled=False)
     auth.create_user(
                 email='user2@gmail.com',
                 email_verified=False,
                 phone_number='+15555550101',
-                password='secretPassword',
+                password='123456',
                 display_name='John Doi',
                 disabled=False)
     auth.create_user(
                 email='user3@gmail.com',
                 email_verified=False,
                 phone_number='+15555550102',
-                password='secretPassword',
+                password='123456',
                 display_name='John Trei',
                 disabled=False)
     

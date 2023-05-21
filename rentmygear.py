@@ -42,6 +42,7 @@ def login():
         try:
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = user
+            return redirect('/settings')
         except:
             return 'Failed to login'
     return render_template('login.html')
@@ -55,9 +56,21 @@ def register():
         try:
             auth.create_user_with_email_and_password(email, password)
             session['account_created'] = True
+            return render_template('registration_success.html')
         except:
             return 'Failed to register'
     return render_template('register.html')
+
+
+@app.route("/delete_account")
+def delete_account():
+    if 'user' in session:
+        try:
+            user = session['user']
+            auth.delete_user_account(user['idToken'])
+        except:
+            return 'Failed to delete account'
+    return redirect('/settings')
 
 
 @app.route("/user")
@@ -87,7 +100,10 @@ def add_item():
 
 @app.route("/settings")
 def settings():
-    return render_template("settings.html", page="settings")
+    if 'user' in session:
+        return render_template("settings.html", page="settings", logged_in=True, email=session['user']['email'])
+    else:
+        return render_template("settings.html", page="settings", logged_in=False)
 
 
 @app.route("/about")
@@ -98,7 +114,7 @@ def about():
 @app.route("/logout")
 def logout():
     session.pop('user')
-    return redirect('/')
+    return redirect('/settings')
 
 
 @app.route('/manifest.json')

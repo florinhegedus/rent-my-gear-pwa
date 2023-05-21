@@ -1,9 +1,32 @@
 {% extends 'base.html' %}
 
 {% block title %}
+
 Settings
+
 {% endblock %}
 
 {% block content %}
-  <p>Settings Page</p>
+  <link rel="stylesheet" href="/static/css/button_style.css">
+
+  {% if logged_in %}
+    <h1>User: {{ email }}</h1>
+    <a href="logout">
+      <button type="button" class="logout_button">Logout</button>
+    </a>
+    <br>
+    <a href="delete_account">
+      <button type="button" class="delete_account_button">Delete Account</button>
+    </a>
+    {% else %}
+    <h1>User is not logged in</h1>
+    <a href="login">
+      <button type="button" class="login_button">Login</button>
+    </a>
+    <br>
+    <a href="register">
+      <button type="button" class="register_button">Register</button>
+    </a>
+    {% endif %}
+
 {% endblock %}

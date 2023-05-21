@@ -5,11 +5,18 @@ Register
 {% endblock %}
 
 {% block content %}
+  <h1>Register</h1>
+  <link rel="stylesheet" href="/static/css/form_style.css">
+
   <form action="/register" method="POST">
-    <label for="fname">email:</label>
-    <input type="text" id="email" name="email"><br><br>
-    <label for="lname">password:</label>
+    <label for="email">email:</label>
+    <br>
+    <input type="text" id="email" name="email">
+    <br>
+    <label for="password">password:</label>
+    <br>
     <input type="password" id="password" name="password"><br><br>
+    <br>
     <input type="submit" value="Register">
   </form>
 {% endblock %}

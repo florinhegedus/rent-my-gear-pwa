@@ -5,5 +5,39 @@ Add Item
 {% endblock %}
 
 {% block content %}
-  <p>Add Item Page</p>
+<h1>Add Item To Rent</h1>
+<!-- <link rel="stylesheet" href="/static/css/form_style.css">
+
+<p><input type="file" multiple accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+<p><label for="file" style="cursor: pointer;">Select Images</label></p>
+<p><img id="output"/></p>
+
+<script>
+var loadFile = function(event) {
+	var image = document.getElementById('output');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+</script> -->
+<link rel="stylesheet" href="/static/css/add_item_style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+	$(function() {
+		$(":file").change(function() {
+		  if (this.files && this.files[0]) {
+			for (var i = 0; i < this.files.length; i++) {
+			  var reader = new FileReader();
+			  reader.onload = imageIsLoaded;
+			  reader.readAsDataURL(this.files[i]);
+			}
+		  }
+		});
+	  });
+	  
+	function imageIsLoaded(e) {
+		$('#images').append('<img src=' + e.target.result + '>');
+	  };
+	</script>
+<input type='file' multiple accept="image/*"/>
+<div id="images">
+</div>
 {% endblock %}
