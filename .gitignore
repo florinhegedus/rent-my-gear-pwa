@@ -1,2 +1,4 @@
 *.pyc
 *.yaml
+static/uploads/*
+rent-my-gear-firebase-adminsdk-chvwl-c28c1be607.json

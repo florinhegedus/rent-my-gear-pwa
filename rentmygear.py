@@ -5,6 +5,7 @@ from flask import Flask, \
                     request, \
                     session, \
                     redirect
+import os
 import pyrebase
 import yaml
 
@@ -18,6 +19,7 @@ with open("firebase_config.yaml", "r") as stream:
 
 app = Flask(__name__)
 app.secret_key = 'secret'
+app.config['UPLOAD_FOLDER'] = "static/uploads"
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
@@ -93,7 +95,23 @@ def search():
     return render_template("search.html", page="search")
 
 
-@app.route("/add_item")
+@app.route("/item_added", methods=['POST'])
+def item_added():
+    if request.method == 'POST':
+  
+        # Get the list of files from webpage
+        files = request.files.getlist("file")
+  
+        # Iterate for each file in the files List, and Save them
+        filenames = []
+        for file in files:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+            filenames.append(file.filename)
+        return str(filenames) + "<h1>Files Uploaded Successfully.!</h1>"
+    return 'not received'
+
+
+@app.route("/add_item", methods=['POST', 'GET'])
 def add_item():
     return render_template("add_item.html", page="add_item")
 
