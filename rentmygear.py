@@ -6,6 +6,7 @@ from flask import Flask, \
                     session, \
                     redirect
 import os
+from pathlib import Path
 import pyrebase
 import yaml
 
@@ -23,6 +24,8 @@ app.config['UPLOAD_FOLDER'] = "static/uploads"
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
+db = firebase.database()
+storage = firebase.storage()
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -98,22 +101,54 @@ def search():
 @app.route("/item_added", methods=['POST'])
 def item_added():
     if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        price = request.form['price']
+        category = request.form['category']
   
         # Get the list of files from webpage
         files = request.files.getlist("file")
+
+        # Get user
+        user = session['user']
+        user_dirpath = Path(os.path.join(app.config['UPLOAD_FOLDER'], user['email'], title))
+        user_dirpath.mkdir(parents=True, exist_ok=True)
   
         # Iterate for each file in the files List, and Save them
-        filenames = []
+        urls = []
         for file in files:
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-            filenames.append(file.filename)
-        return str(filenames) + "<h1>Files Uploaded Successfully.!</h1>"
+            save_path = os.path.join(str(user_dirpath), file.filename)
+            file.save(save_path)
+            storage.child(save_path).put(save_path, user['idToken'])
+            url = storage.child(save_path).get_url(user["idToken"])
+            urls.append(url)
+
+        item = {
+            'title': title,
+            'description': description,
+            'price': price,
+            'category': category,
+            'user': user['email'],
+            'images': urls
+        }
+
+        db.child("items").push(item)
+
+        return redirect('/item_upload_success')
     return 'not received'
+
+
+@app.route("/item_upload_success")
+def item_upload_success():
+    return render_template("item_upload_success.html")
 
 
 @app.route("/add_item", methods=['POST', 'GET'])
 def add_item():
-    return render_template("add_item.html", page="add_item")
+    if 'user' in session:
+        return render_template("add_item.html", page="add_item")
+    else:
+        return 'You need to be logged in to publish items.'
 
 
 @app.route("/settings")
