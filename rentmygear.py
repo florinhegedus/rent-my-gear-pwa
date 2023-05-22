@@ -34,7 +34,9 @@ def home():
     if 'user' not in session:
         user = auth.sign_in_anonymous()
         session['anonymous_user'] = user
-    return render_template('home.html', page='home')
+    items = db.child("items").get().val()
+
+    return render_template('home.html', page='home', items=items)
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -50,7 +52,7 @@ def login():
             return redirect('/settings')
         except:
             return 'Failed to login'
-    return render_template('login.html')
+    return render_template('login.html', page="settings")
 
 
 @app.route("/register", methods=['POST', 'GET'])
@@ -64,7 +66,7 @@ def register():
             return render_template('registration_success.html')
         except:
             return 'Failed to register'
-    return render_template('register.html')
+    return render_template('register.html', page="settings")
 
 
 @app.route("/delete_account")
@@ -86,6 +88,27 @@ def user():
         return session['anonymous_user']
     else:
         return 'Error'
+    
+
+@app.route("/item_details/<key>")
+def item_details(key):
+    item = db.child("items").child(key).get().val()
+    return render_template("item_details.html", page="home", item=item)
+
+
+@app.route("/user_items")
+def user_items():
+    user = session['user']
+    items = db.child("items").get().val()
+    to_drop = []
+    for key, item in items.items():
+        if item['user'] != user['email']:
+            to_drop.append(key)
+
+    for key in to_drop:
+        items.pop(key) 
+
+    return render_template('user_items.html', page='settings', items=items)
 
 
 @app.route("/base")

@@ -1,26 +1,16 @@
 {% extends 'base.html' %}
 {% block title %} Home {% endblock %}
 {% block head %}
-<link rel="manifest" href="../manifest.json">
-<script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register("../sw.js", {scope:"/"}).then(function(registration) {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      // registration failed :(
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
-    </script>
 {% endblock %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/home_style.css">
-
   <h1>Rent My Gear</h1>
-  <h2>Available items:</h2>
+  {% if items|length==0 %}
+    <h2>Published items: you have no published items.</h2>
+  {% else %}
+   <h2>Published items: </h2>
+  {% endif %}
+
   {% for key, value in items.items() %}
   <div class="card" onclick="location.href='item_details/{{key}}';">
     <div class="container">

@@ -15,23 +15,23 @@
         <nav class="nav">
             <div {% if page=='home' %}class="item active"{% else %}class="item"{% endif %}>
                 <div class="content">
-                    <i class="material-icons" onclick="location.href='home';">home</i>
+                    <i class="material-icons" onclick="location.href='/home';">home</i>
                 </div>		
             </div>
             <div {% if page=='search' %}class="item active"{% else %}class="item"{% endif %}>		
                 <div class="content">
-                    <i class="material-icons" onclick="location.href='search';">search</i>
+                    <i class="material-icons" onclick="location.href='/search';">search</i>
                 </div>
             </div>
             <div {% if page=='add_item' %}class="item active"{% else %}class="item"{% endif %}>
                 <div class="content">
-                    <i class="material-icons" onclick="location.href='add_item';">add_box</i>
+                    <i class="material-icons" onclick="location.href='/add_item';">add_box</i>
                 </div>		
             </div>
             
             <div {% if page=='settings' %}class="item active"{% else %}class="item"{% endif %}>
                 <div class="content">
-                    <i class="material-icons" onclick="location.href='settings';">menu</i>
+                    <i class="material-icons" onclick="location.href='/settings';">menu</i>
                 </div>		
             </div>
         </nav>
