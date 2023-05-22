@@ -93,7 +93,15 @@ def user():
 @app.route("/item_details/<key>")
 def item_details(key):
     item = db.child("items").child(key).get().val()
-    return render_template("item_details.html", page="home", item=item)
+
+    can_delete = False
+    if 'user' in session:
+        user = session['user']
+
+        if item['user'] == user['email']:
+            can_delete = True
+
+    return render_template("item_details.html", page="home", item=item, can_delete=can_delete)
 
 
 @app.route("/user_items")

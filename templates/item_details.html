@@ -12,8 +12,16 @@ Item details
 <p>Description: {{item['description']}}</p>
 <p>Price: {{item['price']}}</p>
 <p>Category: {{item['category']}}</p>
+
+{% if can_delete %}
+<button class="delete_button">Delete listing</button>
+{% else %}
+<button class="rent_button">Rent Item</button>
+{% endif %}
+
 <h2>Photos:</h2>
     {% for url in item['images'] %}
         <img src="{{url}}">
     {% endfor %}
+
 {% endblock %}

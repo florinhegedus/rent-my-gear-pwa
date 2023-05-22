@@ -22,3 +22,31 @@ img {
     width: 100%;
     display: inline-block
 }
+
+.delete_button {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #ff4444;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  color: #000000;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.rent_button {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #7edfff;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  color: #000000;
+  font-weight: bold;
+  border-radius: 4px;
+}
