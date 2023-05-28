@@ -36,6 +36,10 @@ def home():
         session['anonymous_user'] = user
     items = db.child("items").get().val()
 
+    # Check if the dict is None to avoid errors in jinja
+    if items is None:
+        items = {}
+
     return render_template('home.html', page='home', items=items)
 
 
@@ -75,6 +79,16 @@ def delete_account():
         try:
             user = session['user']
             auth.delete_user_account(user['idToken'])
+
+            # Delete the items of the user
+            items = db.child("items").get().val()
+            for key, item in items.items():
+                if item['user'] == user['email']:
+                    db.child("items").child(key).remove()
+
+            # Remove user from the current session
+            session.pop('user', None)
+
         except:
             return 'Failed to delete account'
     return redirect('/settings')
@@ -109,12 +123,17 @@ def user_items():
     user = session['user']
     items = db.child("items").get().val()
     to_drop = []
-    for key, item in items.items():
-        if item['user'] != user['email']:
-            to_drop.append(key)
+    
+    # Check if the dict is None to avoid errors in jinja
+    if items is not None:
+        for key, item in items.items():
+            if item['user'] != user['email']:
+                to_drop.append(key)
 
-    for key in to_drop:
-        items.pop(key) 
+        for key in to_drop:
+            items.pop(key)
+    else:
+        items = {}
 
     return render_template('user_items.html', page='settings', items=items)
 
@@ -124,9 +143,34 @@ def base():
     return render_template("base.html")
 
 
-@app.route("/search")
+@app.route("/search", methods=['POST', 'GET'])
 def search():
-    return render_template("search.html", page="search")
+    if request.method == 'POST':
+        search_query = request.form['search']
+        category = request.form['category']
+        try:
+            items = db.child("items").get().val()
+            to_drop = []
+    
+            # Check if the dict is None to avoid errors in jinja
+            if items is not None:
+                for key, item in items.items():
+                    title_filter = search_query in str(item['title']).lower()
+                    description_filter = search_query in str(item['description']).lower()
+                    category_filter = category == item['category'] or category == 'any'
+                    keep_condition = (title_filter or description_filter) and category_filter
+
+                    if not keep_condition:
+                        to_drop.append(key)
+
+                for key in to_drop:
+                    items.pop(key)
+            else:
+                items = {}
+            return render_template('search_items.html', page='search', items=items)
+        except:
+            return 'Failed to search items'
+    return render_template('search.html', page="search")
 
 
 @app.route("/item_added", methods=['POST'])
@@ -140,7 +184,7 @@ def item_added():
         # Get the list of files from webpage
         files = request.files.getlist("file")
 
-        # Get user
+        # Get user and create upload directory
         user = session['user']
         user_dirpath = Path(os.path.join(app.config['UPLOAD_FOLDER'], user['email'], title))
         user_dirpath.mkdir(parents=True, exist_ok=True)
@@ -179,7 +223,7 @@ def add_item():
     if 'user' in session:
         return render_template("add_item.html", page="add_item")
     else:
-        return 'You need to be logged in to publish items.'
+        return render_template("login_needed.html", page="add_item")
 
 
 @app.route("/settings")

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} Search {% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/home_style.css">
+  <h1>Rent My Gear</h1>
+  {% if items|length==0 %}
+    <h2>No items match your search.</h2>
+  {% else %}
+   <h2>Search results: </h2>
+  {% endif %}
+
+  {% for key, value in items.items() %}
+  <div class="card" onclick="location.href='item_details/{{key}}';">
+    <div class="container">
+      <h2>{{value['title']}}</h2>
+      <p>Description: {{value['description']}}</p>
+      <p>Price: {{value['price']}}</p>
+      <p>Category: {{value['category']}}</p>
+      <img src="{{value['images'][0]}}">
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}

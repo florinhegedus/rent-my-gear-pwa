@@ -20,16 +20,21 @@
 <link rel="stylesheet" href="/static/css/home_style.css">
 
   <h1>Rent My Gear</h1>
-  <h2>Available items:</h2>
-  {% for key, value in items.items() %}
-  <div class="card" onclick="location.href='item_details/{{key}}';">
-    <div class="container">
-      <h2>{{value['title']}}</h2>
-      <p>Description: {{value['description']}}</p>
-      <p>Price: {{value['price']}}</p>
-      <p>Category: {{value['category']}}</p>
-      <img src="{{value['images'][0]}}">
+  {% if items|length==0 %}
+    <h2>Published items: there are no published items.</h2>
+  {% else %}
+  
+    {% for key, value in items.items() %}
+    <div class="card" onclick="location.href='item_details/{{key}}';">
+      <div class="container">
+        <h2>{{value['title']}}</h2>
+        <p>Description: {{value['description']}}</p>
+        <p>Price: {{value['price']}}</p>
+        <p>Category: {{value['category']}}</p>
+        <p>Posted by: {{value['user']}}</p>
+        <img src="{{value['images'][0]}}">
+      </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
+  {% endif %}
 {% endblock %}

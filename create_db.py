@@ -3,6 +3,8 @@ import yaml
 import firebase_admin
 from firebase_admin import auth
 from firebase_admin import credentials, db
+from pathlib import Path
+import os
 
 
 def delete_all_users():
@@ -13,27 +15,22 @@ def delete_all_users():
 
 
 def create_users():
-    auth.create_user(
-                email='user1@gmail.com',
-                email_verified=False,
-                phone_number='+15555550100',
-                password='123456',
-                display_name='John Unu',
-                disabled=False)
-    auth.create_user(
-                email='user2@gmail.com',
-                email_verified=False,
-                phone_number='+15555550101',
-                password='123456',
-                display_name='John Doi',
-                disabled=False)
-    auth.create_user(
-                email='user3@gmail.com',
-                email_verified=False,
-                phone_number='+15555550102',
-                password='123456',
-                display_name='John Trei',
-                disabled=False)
+    for i in range(10):
+        # create user ids from 000 to 100
+        user_id = f'{i:03d}'
+
+        # initialize personal details
+        email = 'user' + user_id + '@gmail.com'
+        phone_number = '+15555550' + user_id
+        display_name = 'John ' + user_id 
+        auth.create_user(
+                    email=email,
+                    email_verified=False,
+                    phone_number=phone_number,
+                    password='123456',
+                    display_name=display_name,
+                    disabled=False)
+
     
 
 def reset_database_content():
@@ -48,14 +45,28 @@ def reset_database_content():
     db = firebase.database()
     db.child("items").remove()
 
-    to_push_list = [{"category": "winter sports", "user": "user1@gmail.com", "price": "100", "title": "skis to rent 177cm", "description": "skis in best condition for tall people"},
-                    {"category": "bikes", "user": "user1@gmail.com", "price": "200", "title": "mtb 56cm", "description": "mtb to rent"}]
-    
-    for item in to_push_list:
+    for i in range(10):
+        user_id = f'{i:03d}'
+        email = 'user' + user_id + '@gmail.com'
+        title = 'skis for rent ' + user_id
+        description = 'These are very good skis' + user_id
+        price = 100 + i
+        category = 'ski'
+
+        user_dirpath = Path(os.path.join('static/uploads', email, title))
+        user_dirpath.mkdir(parents=True, exist_ok=True)
+
+        save_path = os.path.join(str(user_dirpath), file)
+        item = {
+                'title': title,
+                'description': description,
+                'price': price,
+                'category': category,
+                'user': email,
+                'images': urls
+            }
         db.child("items").push(item)
-    
-    results = db.child("items").get().val()
-    print(results)
+        
 
 
 def main():
@@ -66,7 +77,7 @@ def main():
     delete_all_users()  
     create_users()  
 
-    reset_database_content()
+    # reset_database_content()
 
 
 if __name__ == '__main__':

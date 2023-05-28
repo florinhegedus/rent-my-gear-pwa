@@ -5,5 +5,20 @@ Search
 {% endblock %}
 
 {% block content %}
-  <p>Search Page</p>
+
+<link rel="stylesheet" href="/static/css/form_style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<form action="/search" method="POST">
+  <input type="text" placeholder="Search..." name="search">
+  <label for="category">Category:</label>
+  <select id="category" name="category">
+    <option value="any">Any</option>
+		<option value="ski">Ski</option>
+		<option value="bike">Bike</option>
+	</select>
+	<br>
+  <input type="submit" value="Search">
+</form>
+
 {% endblock %}
