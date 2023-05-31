@@ -260,6 +260,16 @@ def logo512():
     return send_from_directory("images", "logo512.png")
 
 
+@app.route('/images/rmg_192.png')
+def rmg192():
+    return send_from_directory("images", "rmg_192.png")
+
+
+@app.route('/images/rmg_512.png')
+def rmg512():
+    return send_from_directory("images", "rmg_512.png")
+
+
 @app.route('/sw.js')
 def service_worker():
     response = make_response(send_from_directory('static', 'sw.js'))
